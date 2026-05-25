@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google" content="notranslate" id="noTranslateMeta">
+<title>Client Registration</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F3EE;
+    --card: #FFFFFF;
+    --accent: #1A3C5E;
+    --accent2: #2D6A9F;
+    --success: #1D6B42;
+    --success-bg: #E6F4EC;
+    --error: #8B1A1A;
+    --error-bg: #FDEAEA;
+    --border: #D8D5CC;
+    --text: #1C1C1C;
+    --muted: #6B6862;
+    --input-bg: #FAFAF8;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .wrapper { width: 100%; max-width: 560px; }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-top: 1rem;
+  }
+
+  .logo-mark {
+    width: 52px; height: 52px;
+    background: var(--accent);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+  }
+
+  .logo-mark svg { fill: white; width: 26px; height: 26px; }
+
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.75rem;
+    color: var(--text);
+    font-weight: 400;
+    letter-spacing: -0.3px;
+  }
+
+  .header p { color: var(--muted); font-size: 0.875rem; margin-top: 0.375rem; }
+
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 2rem;
+  }
+
+  .field { margin-bottom: 1.25rem; }
+
+  label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  label span.req { color: var(--accent2); margin-left: 2px; }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 0.65rem 0.875rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9375rem;
+    color: var(--text);
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    appearance: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 0 3px rgba(45, 106, 159, 0.12);
+    background: #fff;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6862' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.875rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+  .btn {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    background: var(--accent);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.01em;
+  }
+
+  .btn:hover { background: #162F4A; }
+  .btn:active { transform: scale(0.99); }
+  .btn:disabled { background: #B0B0A8; cursor: not-allowed; transform: none; }
+
+  .alert {
+    padding: 0.875rem 1rem;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+    display: none;
+    line-height: 1.5;
+  }
+
+  .alert.success {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid #A3D9B8;
+    display: block;
+  }
+
+  .alert.error {
+    background: var(--error-bg);
+    color: var(--error);
+    border: 1px solid #F5B5B5;
+    display: block;
+  }
+
+  .alert.warning {
+    background: #FFF8E6;
+    color: #7A5000;
+    border: 1px solid #F5D580;
+    display: block;
+  }
+
+  .duplicate-info {
+    background: #FFF8E6;
+    border: 1px solid #F5D580;
+    border-radius: 10px;
+    padding: 1rem 1.125rem;
+    display: none;
+    margin-top: 0.5rem;
+  }
+
+  .duplicate-info .di-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #7A5000;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.625rem;
+  }
+
+  .duplicate-info .di-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8375rem;
+    color: #5A3A00;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid #F5D58066;
+  }
+
+  .duplicate-info .di-row:last-child { border-bottom: none; }
+  .duplicate-info .di-label { color: #9A7000; font-size: 0.78rem; }
+
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .required-note { font-size: 0.775rem; color: var(--muted); margin-bottom: 1.25rem; }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="header">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 2.61 1.38 4.88 3.44 6.19L7 22h10l-1.44-6.81C17.62 13.88 19 11.61 19 9c0-3.87-3.13-7-7-7zm0 2c2.76 0 5 2.24 5 5 0 2.02-1.2 3.77-2.95 4.6L13 22h-2l-1.05-8.4C8.2 12.77 7 11.02 7 9c0-2.76 2.24-5 5-5z"/>
+      </svg>
+    </div>
+    <h1>Client Registration</h1>
+    <p>Fill out the form to register a new prospect</p>
+  </div>
+
+  <div class="card">
+    <p class="required-note">Fields marked with <strong style="color:#2D6A9F">*</strong> are required.</p>
+
+    <div class="field">
+      <label for="asesor">Sales Advisor <span class="req">*</span></label>
+      <select id="asesor" required>
+        <option value="">— Select your name —</option>
+        <!-- EDIT: Replace with your advisors' actual names -->
+        <option value="Dylan Tyack">Dylan Tyack</option>
+        <option value="Lincoln McLeod">Lincoln McLeod</option>
+        <option value="Lorena Torrente">Lorena Torrente</option>
+        <option value="Camila Castaño">Camila Castaño</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label for="nombre">Full Name <span class="req">*</span></label>
+      <input type="text" id="nombre" placeholder="e.g. John Smith" required>
+    </div>
+
+    <div class="field">
+      <label for="email">Email Address <span class="req">*</span></label>
+      <input type="email" id="email" placeholder="client@email.com" required>
+      <div class="duplicate-info" id="duplicateBox">
+        <div class="di-title">⚠ Email already registered</div>
+        <div class="di-row"><span class="di-label">Registered by:</span><span id="di-asesor">—</span></div>
+        <div class="di-row"><span class="di-label">Date:</span><span id="di-fecha">—</span></div>
+        <div class="di-row"><span class="di-label">Client name:</span><span id="di-nombre">—</span></div>
+        <div class="di-row"><span class="di-label">Source:</span><span id="di-fuente">—</span></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="telefono">Phone Number</label>
+        <input type="tel" id="telefono" placeholder="+1 000-000-0000">
+      </div>
+      <div class="field">
+        <label for="fuente">Lead Source <span class="req">*</span></label>
+        <select id="fuente" required>
+          <option value="">— Select —</option>
+          <option value="Lobby">Lobby</option>
+          <option value="Own Lead">Own Lead</option>
+          <option value="Campaign Lead">Campaign Lead</option>
+          <option value="Referral">Referral</option>
+          <option value="Social Media">Social Media</option>
+          <option value="Cold Call">Cold Call</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="notas">Additional Notes</label>
+      <textarea id="notas" placeholder="Relevant client information, interest, observations..."></textarea>
+    </div>
+
+    <button class="btn" id="submitBtn" onclick="submitForm()">Register Client</button>
+
+    <div class="alert" id="alertBox"></div>
+  </div>
+</div>
+
+<script>
+  // =============================================
+  // PASTE YOUR GOOGLE WEB APP URL HERE
+  // =============================================
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzTWP3iC7fOv11W2_A5Gz8JHlGa91rQa_Ba006YJ4vsabaWdnMkbDR-U2m8Nkz8oTjuA/exec';
+  // =============================================
+
+  let checkTimeout = null;
+
+  document.getElementById('email').addEventListener('input', function() {
+    clearTimeout(checkTimeout);
+    const email = this.value.trim();
+    const box = document.getElementById('duplicateBox');
+
+    if (!email || !email.includes('@')) {
+      box.style.display = 'none';
+      return;
+    }
+
+    checkTimeout = setTimeout(() => checkDuplicate(email), 700);
+  });
+
+  async function checkDuplicate(email) {
+    try {
+      const res = await fetch(`${SCRIPT_URL}?action=check&email=${encodeURIComponent(email)}`);
+      const data = await res.json();
+      const box = document.getElementById('duplicateBox');
+
+      if (data.exists) {
+        document.getElementById('di-asesor').textContent = data.asesor || '—';
+        document.getElementById('di-fecha').textContent  = data.fecha  || '—';
+        document.getElementById('di-nombre').textContent = data.nombre || '—';
+        document.getElementById('di-fuente').textContent = data.fuente || '—';
+        box.style.display = 'block';
+      } else {
+        box.style.display = 'none';
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  async function submitForm() {
+    const btn   = document.getElementById('submitBtn');
+    const alert = document.getElementById('alertBox');
+
+    const asesor   = document.getElementById('asesor').value;
+    const nombre   = document.getElementById('nombre').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const fuente   = document.getElementById('fuente').value;
+    const notas    = document.getElementById('notas').value.trim();
+
+    alert.className = 'alert';
+    alert.style.display = 'none';
+
+    if (!asesor || !nombre || !email || !fuente) {
+      alert.className = 'alert error';
+      alert.textContent = 'Please fill in all required fields.';
+      return;
+    }
+
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailReg.test(email)) {
+      alert.className = 'alert error';
+      alert.textContent = 'Please enter a valid email address.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Saving...';
+
+    try {
+      const payload = { action: 'register', asesor, nombre, email, telefono, fuente, notas };
+
+      const res  = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+      const data = await res.json();
+
+      if (data.status === 'duplicate') {
+        alert.className = 'alert warning';
+        alert.textContent = `⚠ This email is already registered by ${data.asesor} on ${data.fecha}. The record was not saved.`;
+      } else if (data.status === 'success') {
+        alert.className = 'alert success';
+        alert.textContent = '✓ Client registered successfully. The information has been saved to the system.';
+        ['nombre','email','telefono','notas'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('fuente').value = '';
+        document.getElementById('asesor').value = '';
+        document.getElementById('duplicateBox').style.display = 'none';
+      } else {
+        throw new Error('Unexpected response');
+      }
+    } catch(e) {
+      alert.className = 'alert error';
+      alert.textContent = 'Error submitting the form. Please check your connection and try again.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Register Client';
+    }
+  }
+</script>
+</body>
+</html>
